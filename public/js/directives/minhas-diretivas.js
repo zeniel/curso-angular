@@ -7,7 +7,7 @@ angular
                         titulo: '@', /* copie o valor da expressao 'titulo' nesta variavel */
                         url: '@'
                         },
-                restrict: 'AE', /* restringe o uso do modulo como uma diretiva de A - Atributo e E - Elemento, nao foi marcada a C - comentario */
+                restrict: 'AE',
                 template: ''
                     +   '       <img class="img-responsive center-block"  '
                     +   '         ng-src="{{url}}" alt="sem imagem" title="{{titulo}}"> '
@@ -22,7 +22,11 @@ angular
                         titulo: '@', /* copie o valor da expressao 'titulo' nesta variavel */
                         url: '@'
                         },
-                restrict: 'AE', /* restringe o uso do modulo como uma diretiva de A - Atributo e E - Elemento, nao foi marcada a C - comentario */
+                restrict: 'AE',
+                /* restringe o uso do modulo como uma diretiva de 
+                    A - Atributo
+                    E - Elemento
+                    C - comentario */
                 transclude: true,
                 template: 
                         '<div class="panel panel-default">'
@@ -32,6 +36,21 @@ angular
                     +   '   <div class="panel-body" ng-transclude>'
                     +   '   </div>'
                     +   '</div>'
+                };
+        return ddo;
+        })
+    .directive('meuBotaoPerigo', function (){
+            var ddo = 
+                {
+                scope:  {
+                        nome: '@',
+                        acao: '&'
+                        },
+                restrict: 'E',
+                template: 
+                         '<button class="btn btn-danger btn-block" '
+                    +    '    ng-click="acao()">{{nome}}'
+                    +    '</button>'
                 };
         return ddo;
         })

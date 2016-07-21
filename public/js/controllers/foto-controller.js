@@ -1,50 +1,52 @@
 angular
     .module('alurapic')
-    .controller('FotoController', ['$scope','$http', '$routeParams',
-                    function($scope, $http, $routeParams){
+    .controller('FotoController', ['$scope','$routeParams', 'recursoFoto',
+                    function($scope,  $routeParams, recursoFoto){
                         $scope.foto = {};
                         $scope.mensagem = '';
                         
+                        debugger;
                         if($routeParams.fotoId){
-                            $http
-                                    .get('/v1/fotos/'+$routeParams.fotoId)
-                                    .success(function(foto) {
+                            debugger;
+                            recursoFoto
+                                    .get({fotoId: $routeParams.fotoId},
+                                    function(foto) { /*success*/
                                         $scope.foto = foto;
-                                    })
-                                    .error(function(erro) {
+                                    },
+                                    function(erro) { /* error */
                                         console.log(erro);
-                                        $scope.mensagem = 'N"ao foi possĩvel obter a foto';
-                                    })
+                                        $scope.mensagem = 'Não foi possĩvel obter a foto';
+                                    });
                         }
                         
                         $scope.submeter = function () {
                             if($scope.formulario.$valid){
                                 if($routeParams.fotoId){
-                                    $http
-                                        .put('/v1/fotos/'+ $scope.foto._id, $scope.foto)
-                                        .success(function(){
-                                                $scope.foto = {};
-                                                $scope.mensagem = "Foto alterada";
-                                                console.log('Imagem salva - OK');
-                                            })
-                                        .error(function(erro){
-                                                $scope.mensagem = "Falha ao alterar foto.";
-                                                console.log(erro);
-                                            })
+                                    recursoFoto
+                                        .update({fotoId: $scope.foto._id}, 
+                                                $scope.foto,
+                                                function(){ /* success */
+                                                    $scope.mensagem = 'Foto alterada';
+                                                    console.log('Imagem salva - OK');
+                                                },
+                                                function(erro){ /* error */
+                                                    $scope.mensagem = 'Falha ao alterar foto.';
+                                                    console.log(erro);
+                                                });
                                 }else{
-                                    $http
-                                        .post('/v1/fotos', $scope.foto)
-                                        .success(function(){
-                                                $scope.foto = {};
-                                                $scope.mensagem = "Foto salva";
-                                                console.log('Imagem salva - OK');
-                                            })
-                                        .error(function(erro){
-                                                $scope.mensagem = "Falha ao salvar";
-                                                console.log(erro);
-                                            })
+                                    recursoFoto
+                                        .save($scope.foto,
+                                                function(){ /*on success*/
+                                                    $scope.foto = {};
+                                                    $scope.mensagem = 'Foto salva';
+                                                    console.log('Imagem salva - OK');
+                                                },
+                                                function(erro){ /* on error */
+                                                    $scope.mensagem = 'Falha ao salvar';
+                                                    console.log(erro);
+                                                });
                                 }
                             }
-                        }
+                        };
                     }
                ]);

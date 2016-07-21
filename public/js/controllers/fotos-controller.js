@@ -21,35 +21,33 @@ angular
 
 angular
     .module('alurapic')
-    .controller('FotosController', ['$scope','$http',
-                    function($scope, $http){
+    .controller('FotosController', ['$scope','recursoFoto',
+                    function($scope, recursoFoto){
                         $scope.fotos = [];
                         $scope.mensagem = '';
 
-                        
-                        $http
-                            .get('/v1/fotos')
-                            .success(function (data){
-                                        $scope.fotos=data;
-                                    })
-                            .error(function (erro){
-                                        console.log(erro);
-                                    })
+                        recursoFoto
+                            .query(function(fotos) {
+                                    $scope.fotos=fotos;
+                                },
+                                function (erro){
+                                    console.log(erro);
+                                });
                         $scope.remover = function (foto){
-                            $http
-                                .delete('/v1/fotos/'+foto._id)
-                                .success(function(){
-                                        var indiceFoto = $scope.fotos.indexOf(foto);
-                                        $scope.fotos.splice(indiceFoto, 1);
-                                
-                                        $scope.mensagem = 'Foto '+foto.titulo+ ' de ID:' + foto._id + ' removida.';
-                                        console.log('Foto '+foto.titulo+ ' removida.');
-                                        })
-                                .error(function(erro){
-                                        $scope.mensagem = 'Falha ao remover foto';
-                                        console.log('Falha ao remover foto.');
+                            recursoFoto
+                                .delete({fotoId: foto._id},
+                                        function(){ /* success */
+                                            var indiceFoto = $scope.fotos.indexOf(foto);
+                                            $scope.fotos.splice(indiceFoto, 1);
+
+                                            $scope.mensagem = 'Foto '+foto.titulo+ ' removida.';
+                                            console.log('Foto '+foto.titulo+ ' removida.');
+                                        },
+                                        function(erro){ /* error */
+                                            $scope.mensagem = 'Falha ao remover foto';
+                                            console.log('Falha ao remover foto.');
                                         });
                             
-                        }
+                        };
                     }
                ]);

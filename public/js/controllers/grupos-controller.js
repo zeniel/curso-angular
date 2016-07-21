@@ -13,6 +13,6 @@ angular
                                     })
                             .error(function (erro){
                                         console.log(erro);
-                                    })
+                                    });
                     }
                ]);
