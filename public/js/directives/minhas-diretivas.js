@@ -82,14 +82,17 @@ angular
             },
             link:
                     function (scope, element){
-                        /* função $watch para acompanhar o valor da variável */
-                        scope.$watch('focado', function(){
-                            console.log('focando');
-                            if(scope.focado){
-                                element[0].focus();
-                                scope.focado=false;
-                            }
+                        scope.$on('fotoCadastrada', function(){
+                            element[0].focus();
                         });
+                        /* função $watch para acompanhar o valor da variável */
+//                        scope.$watch('focado', function(){
+//                            console.log('focando');
+//                            if(scope.focado){
+//                                element[0].focus();
+//                                scope.focado=false;
+//                            }
+//                        });
                     }
 
         };
