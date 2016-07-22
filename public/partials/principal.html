@@ -16,11 +16,14 @@
             <meu-painel
                         class="col-md-2 painel-animado"
                         titulo="{{foto.titulo}} - {{grupo[foto.grupo].nome}}">
-                <minha-foto  url="{{foto.url}}" titulo="{{foto.titulo}}">
+                <minha-foto  url="{{foto.url}}" titulo="{{foto.titulo}} - {{foto.grupo}}">
                 </minha-foto>
                 <a class="btn btn-primary btn-block" href="/fotos/edit/{{foto._id}}">Alterar</a>
                 <meu-botao-perigo nome="Remover" acao="remover(foto)"></meu-botao-perigo>
             </meu-painel>
         </div>
     </div>
+</div>
+<div class="row">
+ <!-- -->
 </div>

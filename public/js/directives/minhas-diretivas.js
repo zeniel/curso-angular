@@ -43,8 +43,8 @@ angular
             var ddo = 
                 {
                 scope:  {
-                        nome: '@',
-                        acao: '&'
+                        nome: '@', /* utilizado para fazer o encaminhamento da STRING informada */
+                        acao: '&' /* utilizado para fazer o encaminhamento da FUNÇÃO informada */
                         },
                 restrict: 'E',
                 template: 
@@ -54,4 +54,45 @@ angular
                 };
         return ddo;
         })
+    /**
+    * Diretiva para permitir a utilização do datepicker do jquery no angular
+    **/
+    .directive('meuDatePicker', function($timeout){
+            var ddo = 
+                {
+                scope:  {},
+                restrict: 'E',
+                link: /* será executada assim que a diretiva 'meuDatePicker' for carregada */
+                    function(scope, element){
+                        $(element).datepicker({
+                            onSelect: function(date){
+                                $timeout(function(){
+                                    scope.date = date;
+                                });
+                            }});
+                    }
+                };
+        return ddo;
+    })
+    .directive('meuFocus', function(){
+        var ddo = {
+            restrict: 'A',
+            scope: {
+                focado: '='  /* utilizado para fazer um BIND de uma variável */
+            },
+            link:
+                    function (scope, element){
+                        /* função $watch para acompanhar o valor da variável */
+                        scope.$watch('focado', function(){
+                            console.log('focando');
+                            if(scope.focado){
+                                element[0].focus();
+                                scope.focado=false;
+                            }
+                        });
+                    }
+
+        };
+        return ddo;
+    })
 ;

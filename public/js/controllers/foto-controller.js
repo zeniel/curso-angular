@@ -1,7 +1,7 @@
 angular
     .module('alurapic')
-    .controller('FotoController', ['$scope','$routeParams', 'recursoFoto',
-                    function($scope,  $routeParams, recursoFoto){
+    .controller('FotoController', ['$scope','$routeParams', 'recursoFoto', 'cadastroDeFotos',
+                    function($scope,  $routeParams, recursoFoto, cadastroDeFotos){
                         $scope.foto = {};
                         $scope.mensagem = '';
                         
@@ -21,31 +21,20 @@ angular
                         
                         $scope.submeter = function () {
                             if($scope.formulario.$valid){
-                                if($routeParams.fotoId){
-                                    recursoFoto
-                                        .update({fotoId: $scope.foto._id}, 
-                                                $scope.foto,
-                                                function(){ /* success */
-                                                    $scope.mensagem = 'Foto alterada';
-                                                    console.log('Imagem salva - OK');
-                                                },
-                                                function(erro){ /* error */
-                                                    $scope.mensagem = 'Falha ao alterar foto.';
-                                                    console.log(erro);
-                                                });
-                                }else{
-                                    recursoFoto
-                                        .save($scope.foto,
-                                                function(){ /*on success*/
-                                                    $scope.foto = {};
-                                                    $scope.mensagem = 'Foto salva';
-                                                    console.log('Imagem salva - OK');
-                                                },
-                                                function(erro){ /* on error */
-                                                    $scope.mensagem = 'Falha ao salvar';
-                                                    console.log(erro);
-                                                });
-                                }
+                                cadastroDeFotos.cadastrar($scope.foto)
+                                    .then(function(dados){
+                                        if(dados.inclusao){
+                                            $scope.foto = {};
+                                        }
+                                        $scope.mensagem = dados.msg;
+                                        console.log(dados.msg);
+                                        console.log('mandar focar....');
+                                        $scope.focado = true; /* foca no link de voltar */
+                                    })
+                                    .catch(function(dados){
+                                        $scope.mensagem = dados.msg;
+                                        console.log(dados.msg);
+                                    });
                             }
                         };
                     }
