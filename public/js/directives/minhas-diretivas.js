@@ -83,7 +83,7 @@ angular
             link:
                     function (scope, element){
                         scope.$on('fotoCadastrada', function(){
-                            element[0].focus();
+                             element[0].focus();
                         });
                         /* função $watch para acompanhar o valor da variável */
 //                        scope.$watch('focado', function(){
